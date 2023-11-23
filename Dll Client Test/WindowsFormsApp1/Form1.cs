@@ -13,13 +13,12 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        // Import Dll Functions
         [DllImport("MyDll.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int func_add(int a, int b);
         [DllImport("MyDll.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int func_sub(int a, int b);
 
-        int sum = 0;
-        int sub = 0;
 
         public Form1()
         {
@@ -34,8 +33,14 @@ namespace WindowsFormsApp1
 
         private void button_calculate_Click(object sender, EventArgs e)
         {
+
+            int sum = 0;
+            int sub = 0;
+
+            // Test imported functions
             sum = func_add(19, 5);
             sub = func_sub(19, 5);
+
             label_sum.Text = sum.ToString();
             label_sub.Text = sub.ToString();
         }
