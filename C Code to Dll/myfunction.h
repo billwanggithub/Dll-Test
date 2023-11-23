@@ -13,16 +13,17 @@ extern "C" {
 	struct MyData
 	{
 		/* Put data here. */
-		char* name;
+		char name[100];
 		unsigned age;
 	};
 
 	// export struct
-	DllExport struct MyData myData; 
+	DllExport MyData; 
 
 	//export function
 	DllExport int  func_add(int a, int b); 
 	DllExport int  func_sub(int a, int b);
+	DLLImport struct MyData func_struct(struct MyData myData);
 
 #if defined(__cplusplus)
 }
