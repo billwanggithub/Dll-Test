@@ -14,16 +14,17 @@
 extern "C" {
 #endif
 
-	typedef struct SimpleStruct SimpleStruct;
-	struct SimpleStruct
+	typedef struct StructSimple StructSimple;
+	struct StructSimple
 	{
 		int money;
 		int age;
 	};
-	typedef struct MydataStruct MyDataStruct;
-	struct MyDataStruct
+
+	typedef struct StructWithPointer StructWithPointer;
+	struct StructWithPointer
 	{
-		char name[100];
+		char *name;
 		int age;
 	};
 
@@ -35,8 +36,8 @@ extern "C" {
 	DllExport int  func_sub(int a, int b);
 	DllExport int GetIntSize();
 	DllExport void TestPointer(int* data);
-	DllExport int func_struct(MyDataStruct* myData);
-	DllExport int func_simple_struct(SimpleStruct* myData);
+	DllExport StructWithPointer* func_struct_pointer(StructWithPointer* data1);
+	DllExport int func_struct_simple(StructSimple* myData);
 
 #if defined(__cplusplus)
 }

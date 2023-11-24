@@ -27,11 +27,20 @@ namespace WindowsFormsApp1
 
         //宣告成struct, not Class
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SimpleStruct
+        public struct StructSimple
         {
             public int money; // int : 4 bytes
             public int age;
         }
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
+        public struct StructWithPointer
+        {
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string name;  // Marshaled as LPStr (null-terminated ANSI string)
+
+            public int age;
+        }
+
 
         // Import Dll Functions
         //[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
@@ -45,8 +54,9 @@ namespace WindowsFormsApp1
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern void TestPointer(ref int data);
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int func_simple_struct(ref SimpleStruct myData);
-
+        public static extern int func_struct_simple(ref StructSimple myData);
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr func_struct_pointer(ref StructWithPointer data);
         ////[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
         //[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         //public static extern IntPtr func_struct(IntPtr myData); // Use Intptr for structure https://www.codeproject.com/Questions/1352299/Reading-a-complex-struct-from-Cplusplus-DLL-to-Csh
@@ -85,53 +95,47 @@ namespace WindowsFormsApp1
             Console.WriteLine($"Value from C function: {value}");
 
             // Test SimpleStruct
-            SimpleStruct data = new SimpleStruct
+            StructSimple data = new StructSimple
             {
                 money = 10,
                 age = 25
             };
 
-            // 觀察 data 內容是否被改
-            int result = func_simple_struct(ref data);
+            #region Check Memory
+            IntPtr ptr;
+            int size = Marshal.SizeOf(data);
+            ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(data, ptr, false); //此時才將struct內容複製到ptr所指到的memoey. pointer 前 8 byte 為StructWithPointer.name的位址
+            Marshal.FreeHGlobal(ptr);
+            #endregion
 
-            //SimpleStruct simpleStruct = new SimpleStruct();
-            //int sizeofSimpleStruct = Marshal.SizeOf(simpleStruct.GetType());
-            //IntPtr simpleStructInPtr = Marshal.AllocHGlobal(sizeofSimpleStruct);
-            //simpleStruct = (SimpleStruct)Marshal.PtrToStructure(simpleStructInPtr, typeof(SimpleStruct));
-            //simpleStruct.age = 10;
-            //int age = func_simple_struct(simpleStructInPtr);
+            // 觀察 data 內容是否被改  
+            int result = func_struct_simple(ref data);
+          
+            StructWithPointer dataWithPointer1 = new StructWithPointer
+            {
+                name = "Bill", // pointer: 64 bit address
+                age = 60
+            };
 
-            //// TODO: Test struct => Fail
-            //// Init struct
-            //MyData myDataIn = new MyData();
-            //MyData myDataOut = new MyData(); ;
-            //int size = Marshal.SizeOf(myDataIn.GetType());
+            #region Check Memory
+            size = Marshal.SizeOf(dataWithPointer1);
+            ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(dataWithPointer1, ptr, false); // pointer 前 8 byte 為StructWithPointer.name的位址
+            Marshal.FreeHGlobal(ptr);
 
-            //// assign pointer
-            //IntPtr dataInPtr = Marshal.AllocHGlobal(size);
-            //IntPtr dataOutPtr = Marshal.AllocHGlobal(size);
+            // Allocate unmanaged memory for the string
+            IntPtr namePtr = Marshal.StringToHGlobalAnsi(dataWithPointer1.name); //此時的pointer 是指向dataWithPointer1.name
+            #endregion
 
-            //// Mapping pointer with struct
-            //myDataIn = (MyData)Marshal.PtrToStructure(dataInPtr, typeof(MyData));
-            //myDataOut = (MyData)Marshal.PtrToStructure(dataOutPtr, typeof(MyData));
+            // Call the C function
+            IntPtr resultPtr = func_struct_pointer(ref dataWithPointer1); // pointer 前 8 byte 為dataWithPointer1.name的位址
+            // 觀察 dataWithPointer1/dataWithPointer2 內容是否一樣            
+            StructWithPointer dataWithPointer2 = Marshal.PtrToStructure<StructWithPointer>(resultPtr); // 將 pointer 的內容複製到 struct
 
-            //Debug.WriteLine(
-            //    $"Size of myDataIn  = {Marshal.SizeOf(myDataIn)}, " +
-            //    $"myDataIn.age = {Marshal.SizeOf(myDataIn.age)}, ");// +
-            //                                                        // $"myDataIn.name = {Marshal.SizeOf(myDataIn.name)}");
-
-            //// Assign struct with data
-            //myDataIn.age = 20;
-            ////myDataIn.name = Encoding.ASCII.GetBytes("Johnny");
-            //myDataIn.name = "Johnny";
-
-            ////int age = func_struct_age(dataInPtr);
-
-            //dataOutPtr = func_struct(dataInPtr);
-
-            //label_age.Text = myDataOut.age.ToString();
-            ////label_name.Text = Encoding.ASCII.GetString(myDataOut.name);
-            //label_name.Text = myDataOut.name;
+            label_age.Text = dataWithPointer2.age.ToString();
+            //label_name.Text = Encoding.ASCII.GetString(myDataOut.name);
+            label_name.Text = dataWithPointer2.name;
         }
     }
 }

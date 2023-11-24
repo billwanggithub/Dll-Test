@@ -1,5 +1,6 @@
 #include <stdio.h>  
 #include <string.h> 
+#include <stdlib.h>
 #include "myfunction.h" //  Must to include header
 int func_add(int a, int b)
 {
@@ -23,7 +24,7 @@ void TestPointer(int* data) {
 	*data = 42;
 }
 
-int func_simple_struct(SimpleStruct *myData)
+int func_struct_simple(StructSimple *myData)
 {
 	// Your function implementation here
 	myData->age = 100;
@@ -31,9 +32,25 @@ int func_simple_struct(SimpleStruct *myData)
 	return myData->age + myData->money;
 }
 
-int func_struct(MyDataStruct *myData)
+StructWithPointer* func_struct_pointer(StructWithPointer* data1)
 {
-	// just echo
-	MyDataStruct *_myData = myData;
-	return _myData;
+	// Allocate memory for data2
+	StructWithPointer* data2 = (StructWithPointer*)malloc(sizeof(StructWithPointer));
+
+	// Check if the allocation was successful
+	if (data2 != NULL)
+	{
+		// Copy the values from data1 to data2
+		data2->age = data1->age + 10;
+		data2->name = data1->name;
+
+		// Return the pointer to the allocated memory
+		return data2;
+	}
+	else
+	{
+		// Handle the case where memory allocation failed
+		// For example, you might return NULL or take appropriate action
+		return NULL;
+	}
 }
