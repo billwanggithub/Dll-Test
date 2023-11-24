@@ -36,8 +36,10 @@ extern "C" {
 	DllExport int  func_sub(int a, int b);
 	DllExport int GetIntSize();
 	DllExport void TestPointer(int* data);
-	DllExport StructWithPointer* func_struct_pointer(StructWithPointer* data1);
 	DllExport int func_struct_simple(StructSimple* myData);
+	DllExport StructWithPointer* func_struct_pointer(StructWithPointer* data1, char* lastName);
+
+	char* concatenateStrings(char* str1, char* str2);
 
 #if defined(__cplusplus)
 }

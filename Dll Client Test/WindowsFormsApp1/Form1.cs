@@ -56,7 +56,8 @@ namespace WindowsFormsApp1
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern int func_struct_simple(ref StructSimple myData);
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr func_struct_pointer(ref StructWithPointer data);
+        public static extern IntPtr func_struct_pointer(ref StructWithPointer data1, string lastName);
+
         ////[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
         //[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         //public static extern IntPtr func_struct(IntPtr myData); // Use Intptr for structure https://www.codeproject.com/Questions/1352299/Reading-a-complex-struct-from-Cplusplus-DLL-to-Csh
@@ -92,7 +93,7 @@ namespace WindowsFormsApp1
             TestPointer(ref value);
 
             // 'value' now contains the result from the C function
-            Console.WriteLine($"Value from C function: {value}");
+            Console.WriteLine($"Value from TestPointer function: {value}");
 
             // Test SimpleStruct
             StructSimple data = new StructSimple
@@ -111,7 +112,8 @@ namespace WindowsFormsApp1
 
             // 觀察 data 內容是否被改  
             int result = func_struct_simple(ref data);
-          
+
+            // Test func_struct_pointer
             StructWithPointer dataWithPointer1 = new StructWithPointer
             {
                 name = "Bill", // pointer: 64 bit address
@@ -129,8 +131,8 @@ namespace WindowsFormsApp1
             #endregion
 
             // Call the C function
-            IntPtr resultPtr = func_struct_pointer(ref dataWithPointer1); // pointer 前 8 byte 為dataWithPointer1.name的位址
-            // 觀察 dataWithPointer1/dataWithPointer2 內容是否一樣            
+            IntPtr resultPtr = func_struct_pointer(ref dataWithPointer1, "Wang"); // pointer 前 8 byte 為dataWithPointer1.name的位址
+            // 觀察 dataWithPointer1/dataWithPointer2 內容是否改變            
             StructWithPointer dataWithPointer2 = Marshal.PtrToStructure<StructWithPointer>(resultPtr); // 將 pointer 的內容複製到 struct
 
             label_age.Text = dataWithPointer2.age.ToString();
