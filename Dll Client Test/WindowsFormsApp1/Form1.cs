@@ -80,6 +80,12 @@ namespace WindowsFormsApp1
                     CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr func_struct_pointer(ref StructWithPointer data1, string lastName);
 
+        [DllImport(DllPath,                                      //name of the dll
+            EntryPoint = "buildText",                        //name of function in dll
+            ExactSpelling = true,
+            CharSet = CharSet.Ansi,
+            CallingConvention = CallingConvention.Cdecl)]
+        public static extern int buildText(StringBuilder s1, StringBuilder s2, StringBuilder sResult, int len);
         ////[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
         //[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         //public static extern IntPtr func_struct(IntPtr myData); // Use Intptr for structure https://www.codeproject.com/Questions/1352299/Reading-a-complex-struct-from-Cplusplus-DLL-to-Csh
@@ -160,6 +166,24 @@ namespace WindowsFormsApp1
             label_age.Text = dataWithPointer2.age.ToString();
             //label_name.Text = Encoding.ASCII.GetString(myDataOut.name);
             label_name.Text = dataWithPointer2.name;
+
+
+            // Test buildText
+            StringBuilder sb1 = new StringBuilder("string1");
+            StringBuilder sb2 = new StringBuilder("string2");
+
+            int len = 200;
+            StringBuilder sbResult = new StringBuilder(len);
+            int rc = buildText(sb1, sb2, sbResult, len);
+
+            if (rc > 0)
+            {
+                Debug.WriteLine(sbResult.ToString());
+            }
+            else
+            {
+                Debug.WriteLine("Some Error handling is necessary");
+            }
         }
     }
 }

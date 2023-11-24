@@ -38,6 +38,7 @@ extern "C" {
 	DllExport void TestPointer(int* data);
 	DllExport int func_struct_simple(StructSimple* myData);
 	DllExport StructWithPointer* func_struct_pointer(StructWithPointer* data1, char* lastName);
+	DllExport int buildText(const char* s1, const char* s2, char* sResult, int len);
 
 	char* concatenateStrings(char* str1, char* str2);
 

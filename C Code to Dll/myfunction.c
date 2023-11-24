@@ -56,6 +56,15 @@ StructWithPointer* func_struct_pointer(StructWithPointer* data1, char* lastName)
 	}
 }
 
+int buildText(const char* s1, const char* s2, char* sResult, int len)
+{
+	int cnt = snprintf(sResult, len, "%s %s.", s1, s2);
+
+	int rc = (len > cnt) ? cnt : -1;
+
+	return rc;
+}
+
 char* concatenateStrings(char* str1, char* str2) {
 	// Allocate memory for the result string
 	char* result = (char*)malloc(strlen(str1) + strlen(str2) + 1);
