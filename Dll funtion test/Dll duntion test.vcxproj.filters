@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="myfunction.c">
+    <ClCompile Include="..\C Code to Dll\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="..\C Code to Dll\myfunction.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myfunction.h">
+    <ClInclude Include="..\C Code to Dll\myfunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

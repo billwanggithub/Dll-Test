@@ -100,7 +100,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MyDll.dll">
+    <Content Include="..\..\Debug\MyDll.dll">
+      <Link>MyDll.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
