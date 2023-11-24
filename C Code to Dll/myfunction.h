@@ -14,21 +14,29 @@
 extern "C" {
 #endif
 
-	struct MyData
+	typedef struct SimpleStruct SimpleStruct;
+	struct SimpleStruct
 	{
-		/* Put data here. */
+		int money;
+		int age;
+	};
+	typedef struct MydataStruct MyDataStruct;
+	struct MyDataStruct
+	{
 		char name[100];
 		int age;
 	};
 
 	// export struct
-	DllExport MyData; 
+	//DllExport MyData; 
 
 	//export function
 	DllExport int  func_add(int a, int b); 
 	DllExport int  func_sub(int a, int b);
-	DllExport int func_struct_age(struct MyData* myData);
-	DLLImport struct MyData* func_struct(struct MyData* myData);
+	DllExport int GetIntSize();
+	DllExport void TestPointer(int* data);
+	DllExport int func_struct(MyDataStruct* myData);
+	DllExport int func_simple_struct(SimpleStruct* myData);
 
 #if defined(__cplusplus)
 }
