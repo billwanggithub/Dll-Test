@@ -43,19 +43,41 @@ namespace WindowsFormsApp1
 
 
         // Import Dll Functions
-        //[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "func_add",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern int func_add(int a, int b);
-        //[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "func_sub",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern int func_sub(int a, int b);
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "GetIntSize",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern int GetIntSize();
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "TestPointer",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern void TestPointer(ref int data);
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "func_struct_simple",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern int func_struct_simple(ref StructSimple myData);
-        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(DllPath,                                      //name of the dll
+                    EntryPoint = "func_struct_pointer",                        //name of function in dll
+                    ExactSpelling = true,
+                    CharSet = CharSet.Ansi,
+                    CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr func_struct_pointer(ref StructWithPointer data1, string lastName);
 
         ////[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
