@@ -66,18 +66,16 @@ namespace WindowsFormsApp1
 
         private void button_calculate_Click(object sender, EventArgs e)
         {
+            // Test simple functions
             int sum = 0;
             int sub = 0;
-
-            // Test simple functions
             sum = func_add(19, 5);
             sub = func_sub(19, 5);
 
             label_sum.Text = sum.ToString();
             label_sub.Text = sub.ToString();
 
-
-            Console.WriteLine($"Size of dll int = {GetIntSize()}");
+            Console.WriteLine($"Size of c dll int = {GetIntSize()}");
 
             // Test Pointer
             int value = 0;
