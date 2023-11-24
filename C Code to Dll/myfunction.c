@@ -65,6 +65,18 @@ int buildText(const char* s1, const char* s2, char* sResult, int len)
 	return rc;
 }
 
+int buildBuffer(const unsigned char* s1, int l1, unsigned char* sResult, int len)
+{
+	//some lite error handling
+	//bool enoughBytes = (len > l1);
+	//only copy buffer size
+	size_t lenCopy = (len > l1) ? l1 : len;
+
+	memcpy(sResult, s1, lenCopy);
+
+	return (len > l1) ? 0 : -1;
+}
+
 char* concatenateStrings(char* str1, char* str2) {
 	// Allocate memory for the result string
 	char* result = (char*)malloc(strlen(str1) + strlen(str2) + 1);

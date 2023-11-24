@@ -86,6 +86,13 @@ namespace WindowsFormsApp1
             CharSet = CharSet.Ansi,
             CallingConvention = CallingConvention.Cdecl)]
         public static extern int buildText(StringBuilder s1, StringBuilder s2, StringBuilder sResult, int len);
+
+        [DllImport(DllPath,                                      //name of the dll
+           EntryPoint = "buildBuffer",                       //name of function in dll
+           ExactSpelling = true,
+           CharSet = CharSet.Ansi,
+           CallingConvention = CallingConvention.Cdecl)]
+        public static extern int buildBuffer(byte[] b1, int l1, byte[] bResult, int len);
         ////[DllImport(DllPath, CharSet = CharSet.Auto, SetLastError = true)]
         //[DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         //public static extern IntPtr func_struct(IntPtr myData); // Use Intptr for structure https://www.codeproject.com/Questions/1352299/Reading-a-complex-struct-from-Cplusplus-DLL-to-Csh
@@ -184,6 +191,20 @@ namespace WindowsFormsApp1
             {
                 Debug.WriteLine("Some Error handling is necessary");
             }
+
+            // Test buildBuffer
+            String s1 = "Bill Wang";
+
+            byte[] dataBytes = new Byte[255];
+            byte[] resultBytes = new Byte[4];
+
+            for (int i = 0; i < s1.Length; i++)
+            {
+                dataBytes[i] = (byte)s1[i];
+            }
+
+            rc = buildBuffer(dataBytes, s1.Length, resultBytes, resultBytes.Length);
+
         }
     }
 }
